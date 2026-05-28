@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background-color: #0e0e0e;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ── Header ── */
+        .header {
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #555;
+            margin-top: 3px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #141414;
+            border: 1px solid #1e1e1e;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #4CAF50;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4CAF50;
+            box-shadow: 0 0 6px #4CAF50;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.3; }
+        }
+
+        /* ── Nav ── */
+        .nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .nav a { text-decoration: none; }
+
+        .nav-btn {
+            width: 100%;
+            padding: 13px 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.88;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .home     { background: #4CAF50; }
+        .status   { background: #f44336; }
+        .files    { background: #2196F3; }
+        .controls { background: #ff9800; }
+
+        /* ── Panel ── */
+        .panel {
+            background: #141414;
+            border: 1px solid #1e1e1e;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .panel-header {
+            padding: 16px 22px;
+            border-bottom: 1px solid #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .panel-header .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .section-label {
+            padding: 8px 22px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 2px;
+            color: #333;
+            background: #111;
+            border-bottom: 1px solid #1a1a1a;
+            text-transform: uppercase;
+        }
+
+        .metric-plain {
+            padding: 14px 22px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-plain:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        body.page-ready {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .metric-value {
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .online  { color: #4CAF50; }
+        .offline { color: #f44336; }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #2e2e2e;
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <h1>Smart Home Server</h1>
+            <p>Raspberry Pi Dashboard</p>
+        </div>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            ONLINE
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav">
+        <a href="/"><button class="nav-btn home">Home</button></a>
+        <a href="/status"><button class="nav-btn status">Status</button></a>
+        <a href="/files"><button class="nav-btn files">Files</button></a>
+        <a href="/controls"><button class="nav-btn controls">Controls</button></a>
+    </nav>
+
+    <!-- Panel -->
+    <div class="panel">
+
+        <div class="panel-header">
+            <div class="dot"></div>
+            <h3>Server Overview</h3>
+        </div>
+
+        <div class="section-label">general</div>
+
+        <div class="metric-plain">
+            <span class="metric-label">server_status</span>
+            <span class="metric-value online">● Online</span>
+        </div>
+
+        <div class="metric-plain">
+            <span class="metric-label">network_mode</span>
+            <span class="metric-value">Local Development</span>
+        </div>
+
+        <div class="metric-plain">
+            <span class="metric-label">connected_devices</span>
+            <span class="metric-value {{ 'online' if connected_devices else 'offline' }}">
+                {{ connected_devices }} device{{ '' if connected_devices == 1 else 's' }}
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>Joey Coifman &bull; Raspberry Pi Server Project</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('page-ready');
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+            if (link.target || link.hasAttribute('download')) return;
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                document.body.classList.remove('page-ready');
+                setTimeout(() => window.location.href = link.href, 240);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

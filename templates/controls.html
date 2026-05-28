@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Controls</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background-color: #0e0e0e;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        body.page-ready {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header {
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #555;
+            margin-top: 3px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .controls-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #141414;
+            border: 1px solid #1e1e1e;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #ff9800;
+            white-space: nowrap;
+        }
+
+        .nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .nav a {
+            text-decoration: none;
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 13px 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.88;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .home     { background: #4CAF50; }
+        .status   { background: #f44336; }
+        .files    { background: #2196F3; }
+        .controls { background: #ff9800; }
+
+        .panel {
+            background: #141414;
+            border: 1px solid #1e1e1e;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .panel-header {
+            padding: 16px 22px;
+            border-bottom: 1px solid #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .panel-header .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .section-label {
+            padding: 8px 22px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 2px;
+            color: #333;
+            background: #111;
+            border-bottom: 1px solid #1a1a1a;
+            text-transform: uppercase;
+        }
+
+        .device-row {
+            padding: 16px 22px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .device-row:last-child {
+            border-bottom: none;
+        }
+
+        .device-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .device-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .device-sub {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #444;
+        }
+
+        .device-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            padding: 10px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+            border: 1px solid #2a2a2a;
+            background: #1a1a1a;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            background: #2a2a2a;
+        }
+
+        .btn-primary { background: #ff9800; border-color: #d67b00; }
+        .btn-secondary { background: #4CAF50; border-color: #3a8e41; }
+        .btn-danger { background: #f44336; border-color: #c2332b; }
+
+        .status-panel {
+            background: #181818;
+            border-top: 1px solid #1e1e1e;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .status-item {
+            padding: 14px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-size: 13px;
+            color: #888;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .status-value {
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #101010;
+            border: 1px solid #2a2a2a;
+        }
+
+        .status-on {
+            color: #4CAF50;
+            border-color: #28753f;
+            background: rgba(76, 175, 80, 0.12);
+        }
+
+        .status-off {
+            color: #f44336;
+            border-color: #8f2b24;
+            background: rgba(244, 67, 54, 0.12);
+        }
+
+        .status-angle {
+            color: #2196F3;
+            border-color: #0f5e8a;
+            background: rgba(33, 150, 243, 0.12);
+        }
+
+        .custom-servo-form {
+            padding: 18px 22px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .custom-servo-form label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .custom-servo-form input {
+            background: #101010;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #e0e0e0;
+            padding: 10px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            width: 140px;
+        }
+
+        .custom-servo-form input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .placeholder {
+            padding: 14px 22px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #444;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #2e2e2e;
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div>
+            <h1>Device Controls</h1>
+            <p>control connected devices</p>
+        </div>
+        <div class="controls-badge">⚙ controls panel</div>
+    </div>
+
+    <nav class="nav">
+        <a href="/"><button class="nav-btn home">Home</button></a>
+        <a href="/status"><button class="nav-btn status">Status</button></a>
+        <a href="/files"><button class="nav-btn files">Files</button></a>
+        <a href="/controls"><button class="nav-btn controls">Controls</button></a>
+    </nav>
+
+    <div class="panel status-panel">
+        <div class="panel-header">
+            <div class="dot"></div>
+            <h3>Current Device State</h3>
+        </div>
+
+        <div class="status-item">
+            <span class="status-label">LED</span>
+            <span class="status-value {{ 'status-on' if led_status == 'ON' else 'status-off' }}">
+                {{ led_status }}
+            </span>
+        </div>
+
+        <div class="status-item">
+            <span class="status-label">Servo position</span>
+            <span class="status-value status-angle">
+                {{ servo_position }}
+            </span>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div class="dot"></div>
+            <h3>Connected Devices</h3>
+        </div>
+
+        <div class="section-label">hardware</div>
+
+        <div class="device-row">
+            <div class="device-left">
+                <div class="device-name">LED</div>
+                <div class="device-sub">basic output control</div>
+            </div>
+
+            <div class="device-actions">
+                <a href="/controls/LED/ON" class="action-btn btn-primary">LED ON</a>
+                <a href="/controls/LED/OFF" class="action-btn btn-danger">LED OFF</a>
+            </div>
+        </div>
+
+        <div class="device-row">
+            <div class="device-left">
+                <div class="device-name">Servo</div>
+                <div class="device-sub">motion control module</div>
+            </div>
+
+            <div class="device-actions">
+                <a href="/controls/Servo/0" class="action-btn btn-secondary">0°</a>
+                <a href="/controls/Servo/90" class="action-btn btn-secondary">90°</a>
+                <a href="/controls/Servo/180" class="action-btn btn-secondary">180°</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div class="dot"></div>
+            <h3>Control Actions</h3>
+        </div>
+
+        <div class="section-label">custom servo angle</div>
+
+        <form method="POST" action="/controls/Servo/Custom" class="custom-servo-form">
+            <label for="angle">Enter angle</label>
+
+            <input
+                type="number"
+                id="angle"
+                name="angle"
+                min="0"
+                max="180"
+                placeholder="0 - 180"
+                required
+            >
+
+            <button type="submit" class="action-btn btn-secondary">
+                Move Servo
+            </button>
+        </form>
+
+        <div class="placeholder">
+            Enter any angle from 0° to 180° and the command will be sent through Flask → Node-RED → Arduino.
+        </div>
+    </div>
+
+</div>
+
+<footer>Joey Coifman &bull; Raspberry Pi Server Project</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('page-ready');
+
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+            if (link.target || link.hasAttribute('download')) return;
+
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                document.body.classList.remove('page-ready');
+                setTimeout(() => window.location.href = link.href, 240);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
