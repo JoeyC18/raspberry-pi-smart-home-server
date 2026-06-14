@@ -1,0 +1,493 @@
+[
+    {
+        "id": "34221397b5243a99",
+        "type": "tab",
+        "label": "LED ON",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3499d906106d5390",
+        "type": "tab",
+        "label": "LED OFF",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c5c552e7772c15c8",
+        "type": "tab",
+        "label": "SERVO 0",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "121783a989344f8b",
+        "type": "tab",
+        "label": "SERVO 90",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0169c29a1be2dc28",
+        "type": "tab",
+        "label": "SERVO 180",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0e2ae1d2843a950f",
+        "type": "tab",
+        "label": "SERVO SET",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "669db4a544dcd99d",
+        "type": "serial-port",
+        "name": "",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "9600",
+        "databits": 8,
+        "parity": "none",
+        "stopbits": 1,
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": 10000
+    },
+    {
+        "id": "73f7ef16800294c4",
+        "type": "serial-port",
+        "name": "",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "57600",
+        "databits": 8,
+        "parity": "none",
+        "stopbits": 1,
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": 10000
+    },
+    {
+        "id": "4c4f84d955ba0502",
+        "type": "http in",
+        "z": "34221397b5243a99",
+        "name": "",
+        "url": "/LED/ON",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 160,
+        "wires": [
+            [
+                "cd14229f7a9b965e"
+            ]
+        ]
+    },
+    {
+        "id": "cd14229f7a9b965e",
+        "type": "change",
+        "z": "34221397b5243a99",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "LED_ON",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 160,
+        "wires": [
+            [
+                "72821be9f227deb2",
+                "43cfa1a2b740e42c"
+            ]
+        ]
+    },
+    {
+        "id": "43cfa1a2b740e42c",
+        "type": "serial out",
+        "z": "34221397b5243a99",
+        "name": "",
+        "serial": "669db4a544dcd99d",
+        "x": 640,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "72821be9f227deb2",
+        "type": "http response",
+        "z": "34221397b5243a99",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 390,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "8fe8400d26b845ae",
+        "type": "http in",
+        "z": "3499d906106d5390",
+        "name": "",
+        "url": "/LED/OFF",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 220,
+        "y": 200,
+        "wires": [
+            [
+                "9819743d6e797714"
+            ]
+        ]
+    },
+    {
+        "id": "9819743d6e797714",
+        "type": "change",
+        "z": "3499d906106d5390",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "LED_OFF",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 200,
+        "wires": [
+            [
+                "f0ee7adb663ff48d",
+                "188c4c1e16a0237a"
+            ]
+        ]
+    },
+    {
+        "id": "f0ee7adb663ff48d",
+        "type": "http response",
+        "z": "3499d906106d5390",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 530,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "188c4c1e16a0237a",
+        "type": "serial out",
+        "z": "3499d906106d5390",
+        "name": "",
+        "serial": "669db4a544dcd99d",
+        "x": 820,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e921bd72a0791ba6",
+        "type": "http in",
+        "z": "c5c552e7772c15c8",
+        "name": "",
+        "url": "/SERVO/0",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 240,
+        "y": 180,
+        "wires": [
+            [
+                "19f857cabedb1c8c"
+            ]
+        ]
+    },
+    {
+        "id": "19f857cabedb1c8c",
+        "type": "change",
+        "z": "c5c552e7772c15c8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "SERVO_0",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 520,
+        "y": 180,
+        "wires": [
+            [
+                "671d7a4c87fbd205",
+                "23bf1e2667525b9d"
+            ]
+        ]
+    },
+    {
+        "id": "671d7a4c87fbd205",
+        "type": "http response",
+        "z": "c5c552e7772c15c8",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 550,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "23bf1e2667525b9d",
+        "type": "serial out",
+        "z": "c5c552e7772c15c8",
+        "name": "",
+        "serial": "669db4a544dcd99d",
+        "x": 840,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8994a9af193e11dc",
+        "type": "http in",
+        "z": "121783a989344f8b",
+        "name": "",
+        "url": "/SERVO/90",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 220,
+        "y": 180,
+        "wires": [
+            [
+                "1f1ca71c3a74a755"
+            ]
+        ]
+    },
+    {
+        "id": "1f1ca71c3a74a755",
+        "type": "change",
+        "z": "121783a989344f8b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "SERVO_90",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 180,
+        "wires": [
+            [
+                "50338bcffed35cf3",
+                "6264f7a0b3c61114"
+            ]
+        ]
+    },
+    {
+        "id": "50338bcffed35cf3",
+        "type": "http response",
+        "z": "121783a989344f8b",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 530,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "6264f7a0b3c61114",
+        "type": "serial out",
+        "z": "121783a989344f8b",
+        "name": "",
+        "serial": "669db4a544dcd99d",
+        "x": 820,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "9899bee9ee45fccc",
+        "type": "http in",
+        "z": "0169c29a1be2dc28",
+        "name": "",
+        "url": "/SERVO/180",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 250,
+        "y": 200,
+        "wires": [
+            [
+                "9fc19fa5b0d202bc"
+            ]
+        ]
+    },
+    {
+        "id": "9fc19fa5b0d202bc",
+        "type": "change",
+        "z": "0169c29a1be2dc28",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "SERVO_180",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 520,
+        "y": 200,
+        "wires": [
+            [
+                "6211b5fb220fee9e",
+                "d785abafcfb0f4b1"
+            ]
+        ]
+    },
+    {
+        "id": "6211b5fb220fee9e",
+        "type": "http response",
+        "z": "0169c29a1be2dc28",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 550,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d785abafcfb0f4b1",
+        "type": "serial out",
+        "z": "0169c29a1be2dc28",
+        "name": "",
+        "serial": "669db4a544dcd99d",
+        "x": 840,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "2cd48a2c1b8fa460",
+        "type": "http in",
+        "z": "0e2ae1d2843a950f",
+        "name": "",
+        "url": "/servo/:angle",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 230,
+        "y": 160,
+        "wires": [
+            [
+                "d3460eff754fabf1"
+            ]
+        ]
+    },
+    {
+        "id": "d3460eff754fabf1",
+        "type": "function",
+        "z": "0e2ae1d2843a950f",
+        "name": "Build Servo Command",
+        "func": "let angle = Number(msg.req.params.angle);\n\nif (isNaN(angle)) {\n    angle = 0;\n}\n\nif (angle < 0) {\n    angle = 0;\n}\n\nif (angle > 180) {\n    angle = 180;\n}\n\nmsg.payload = \"SERVO:\" + angle + \"\\n\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 160,
+        "wires": [
+            [
+                "1535b8d52e4b944c",
+                "9a6f5127838236ef"
+            ]
+        ]
+    },
+    {
+        "id": "1535b8d52e4b944c",
+        "type": "serial out",
+        "z": "0e2ae1d2843a950f",
+        "name": "",
+        "serial": "669db4a544dcd99d",
+        "x": 840,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "9a6f5127838236ef",
+        "type": "http response",
+        "z": "0e2ae1d2843a950f",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 530,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "7dbaa14893483112",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-node-serialport": "2.0.3"
+        }
+    }
+]
