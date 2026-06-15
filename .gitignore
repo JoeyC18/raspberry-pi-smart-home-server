@@ -24,4 +24,4 @@ Thumbs.db
 .idea/
 
 # Logs
-*.log
+*.logdevice_state.json
