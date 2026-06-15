@@ -1,14 +1,14 @@
 # Raspberry Pi Smart Home Server
 
-A Raspberry Pi-based smart home server developed using Flask, Node-RED, and Arduino integration. The project combines system monitoring, file management, and physical hardware control into one browser-based dashboard.
+A full-stack Raspberry Pi project that combines system monitoring, local file management, and Arduino hardware control inside one browser-based dashboard.
 
-![Raspberry Pi Smart Home Server](docs/images/Smart%20Home%20Server%20Main%20Screen.png)
+The application uses Flask as the web server, Node-RED as the communication layer, and USB serial communication to control an LED and servo motor connected to an Arduino.
 
 ## Project Demonstrations
 
 ### Software Walkthrough
 
-This walkthrough demonstrates the Flask dashboard, live Raspberry Pi system monitoring, file management, and device-control interface.
+The software walkthrough demonstrates the main dashboard, live Raspberry Pi system information, file management tools, and hardware-control interface.
 
 [![Watch the Software Walkthrough](docs/images/Smart%20Home%20Server%20Main%20Screen.png)](https://youtu.be/jApAIk-ZR-c)
 
@@ -16,17 +16,27 @@ This walkthrough demonstrates the Flask dashboard, live Raspberry Pi system moni
 
 ### Full Hardware Demonstration
 
-This demonstration shows the complete system working from the browser interface to the physical hardware. Commands are sent from the Flask dashboard to Node-RED, transferred to the Arduino through USB serial communication, and used to control the LED and servo motor connected to the breadboard.
+The hardware demonstration shows the complete system operating from end to end. Commands are sent from the Flask dashboard to Node-RED and then transferred to the Arduino through USB serial communication to control the LED and servo motor.
 
 [![Watch the Full Hardware Demonstration](docs/images/Smart%20Home%20Server%20Device%20Controls.png)](https://youtube.com/shorts/GVCfA7g-HXs?feature=share)
 
 [Watch the Full Hardware Demonstration on YouTube](https://youtube.com/shorts/GVCfA7g-HXs?feature=share)
 
+## Project Overview
+
+This project was developed to explore how web applications, system utilities, automation platforms, and embedded hardware can be connected within one local network.
+
+The dashboard provides three primary functions:
+
+* Monitoring Raspberry Pi system performance
+* Managing files stored on the Raspberry Pi
+* Controlling physical hardware through an Arduino
+
 ## Features
 
 ### System Monitoring
 
-* Real-time CPU usage monitoring
+* Live CPU usage
 * RAM usage tracking
 * Disk and storage monitoring
 * System uptime display
@@ -35,26 +45,27 @@ This demonstration shows the complete system working from the browser interface 
 
 ### File Management
 
-* Upload files directly to the Raspberry Pi
-* Store files locally on the server
-* Dynamically display uploaded files
-* Delete files through the web interface
+* Upload files through the browser
+* Store files locally on the Raspberry Pi
+* Display uploaded files dynamically
+* Delete files through the dashboard
 * Display individual file sizes
-* Calculate total uploaded-folder storage
+* Calculate total folder storage usage
 
 ### Hardware Control
 
-* Turn a connected LED on and off
-* Control a servo motor through the dashboard
+* Turn an LED on and off
+* Move a servo motor to preset positions
 * Enter a custom servo angle
-* Send commands from Flask to Node-RED
-* Communicate with an Arduino through USB serial communication
+* Preserve device-state information
+* Send HTTP requests from Flask to Node-RED
+* Send serial commands from Node-RED to Arduino
 
 ## Screenshots
 
 ### Main Dashboard
 
-The main dashboard provides navigation to the system-status, file-management, and device-control sections of the server.
+The main dashboard provides access to system monitoring, file management, and device controls.
 
 ![Smart Home Server Main Screen](docs/images/Smart%20Home%20Server%20Main%20Screen.png)
 
@@ -66,13 +77,13 @@ The system-status page displays live Raspberry Pi information, including CPU usa
 
 ### File Management
 
-The file-management page allows users to upload, view, and delete files stored on the Raspberry Pi.
+The file hub allows users to upload, view, and delete files stored on the Raspberry Pi.
 
 ![Smart Home Server File Hub](docs/images/Smart%20Home%20Server%20File%20Hub.png)
 
 ### Device Controls
 
-The device-controls page allows users to control an LED and servo motor connected through an Arduino.
+The device-control page allows users to control an LED and servo motor connected through an Arduino.
 
 ![Smart Home Server Device Controls](docs/images/Smart%20Home%20Server%20Device%20Controls.png)
 
@@ -99,44 +110,42 @@ LED and Servo Motor
 ## Hardware-Control Flow
 
 ```text
-User clicks a control button
+User selects a control
           ↓
-Flask route is triggered
+Flask route processes the request
           ↓
 Flask sends an HTTP request to Node-RED
           ↓
-Node-RED sends a serial command
+Node-RED creates the required serial command
           ↓
-Arduino receives the command
+Arduino receives and processes the command
           ↓
 The LED or servo motor responds
 ```
 
 ## Technologies Used
 
-### Backend
+### Software
 
 * Python
 * Flask
 * psutil
 * requests
 * pyserial
-
-### Frontend
-
+* Node-RED
 * HTML
 * CSS
-* Jinja templates
+* Jinja
 
-### Hardware and Systems
+### Hardware
 
 * Raspberry Pi
 * Arduino
-* Node-RED
-* USB serial communication
 * Breadboard
 * LED
 * Servo motor
+* USB serial connection
+* Jumper wires
 
 ### Development Tools
 
@@ -145,7 +154,7 @@ The LED or servo motor responds
 * GitHub
 * Arduino IDE
 
-## Project Structure
+## Repository Structure
 
 ```text
 raspberry-pi-smart-home-server/
@@ -154,6 +163,7 @@ raspberry-pi-smart-home-server/
 ├── HomeServerProject_ArduinoCode.ino
 ├── requirements.txt
 ├── README.md
+├── LICENSE
 ├── .gitignore
 │
 ├── templates/
@@ -175,22 +185,18 @@ raspberry-pi-smart-home-server/
         └── Smart Home Server Device Controls.png
 ```
 
-## Key Concepts Learned
+## Installation and Setup
 
-* Flask routing and web-server development
-* Jinja template rendering
-* Backend-to-frontend data flow
-* Raspberry Pi system monitoring with psutil
-* File upload and storage management
-* HTTP communication between Flask and Node-RED
-* Serial communication between Raspberry Pi and Arduino
-* Embedded hardware control
-* Servo-angle validation
-* Device-state management
-* Git and GitHub version-control workflow
-* Python virtual environments and dependency management
+### Prerequisites
 
-## Setup Instructions
+Before running the project, make sure the following are available:
+
+* Raspberry Pi running Raspberry Pi OS
+* Python 3
+* Arduino and USB cable
+* Node-RED
+* Arduino IDE
+* Internet connection for initial package installation
 
 ### 1. Clone the Repository
 
@@ -199,9 +205,9 @@ git clone https://github.com/JoeyC18/raspberry-pi-smart-home-server.git
 cd raspberry-pi-smart-home-server
 ```
 
-### 2. Install Virtual-Environment Support
+### 2. Install Python Virtual-Environment Support
 
-Raspberry Pi OS protects its system-managed Python installation. The project should therefore be run inside a virtual environment.
+Raspberry Pi OS uses a system-managed Python environment, so the project should run inside a virtual environment.
 
 ```bash
 sudo apt update
@@ -220,107 +226,20 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-After activation, the terminal should begin with:
+The terminal should now begin with:
 
 ```text
 (venv)
 ```
 
-### 5. Install the Required Packages
+### 5. Install Python Dependencies
 
 ```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### 6. Run the Flask Server
-
-```bash
-python app.py
-```
-
-### 7. Open the Dashboard
-
-Open the following address in a browser:
-
-```text
-http://YOUR_PI_IP:5000
-```
-
-Replace `YOUR_PI_IP` with the local IP address of the Raspberry Pi.
-
-The IP address can be found by running:
-
-```bash
-hostname -I
-```
-
-### 8. Stop the Server
-
-Press:
-
-```text
-Ctrl + C
-```
-
-### 9. Deactivate the Virtual Environment
-
-```bash
-deactivate
-```
-
-Each time the project is restarted, activate the environment again:
-
-```bash
-cd ~/projects/Project1
-source venv/bin/activate
-python app.py
-```
-
-## Python Requirements
-
-The required Python packages are stored in:
-
-```text
-requirements.txt
-```
-
-To recreate the dependency file after installing or updating packages, run:
-
-```bash
-python -m pip freeze > requirements.txt
-```
-
-To view the saved dependencies:
-
-```bash
-cat requirements.txt
-```
-
-## Arduino Setup
-
-1. Open `HomeServerProject_ArduinoCode.ino` in the Arduino IDE.
-2. Select the correct Arduino board.
-3. Select the correct USB port.
-4. Confirm that the LED and servo pins match the physical wiring.
-5. Upload the program to the Arduino.
-6. Connect the Arduino to the Raspberry Pi using USB.
-
-To check the connected Arduino port on the Raspberry Pi, run:
-
-```bash
-ls /dev/ttyACM*
-```
-
-The Arduino may appear as:
-
-```text
-/dev/ttyACM0
-```
-
-## Node-RED Setup
-
-Start Node-RED by running:
+### 6. Start Node-RED
 
 ```bash
 node-red-start
@@ -332,45 +251,145 @@ Open Node-RED in a browser:
 http://YOUR_PI_IP:1880
 ```
 
-Confirm that:
-
-* The required HTTP endpoints are configured
-* The serial node is connected to the correct Arduino port
-* The serial baud rate matches the Arduino program
-* The Node-RED flow has been deployed
-* The Flask application uses the correct Node-RED URLs
-
-The exported Node-RED configuration can be stored in:
+Import the included flow:
 
 ```text
 node-red/flows.json
 ```
 
-## Security Notes
+Confirm that the serial node is connected to the correct Arduino port.
 
-* Do not upload passwords, API keys, or private credentials to GitHub
-* Do not upload `.env` files
-* Do not commit the `venv` folder
-* Do not commit Python `__pycache__` folders
-* Do not commit runtime-generated state files
-* Do not store private uploaded files in the public repository
-* Add authentication before enabling remote access
-* Use secure network settings when exposing the server outside the local network
+### 7. Upload the Arduino Program
+
+1. Open `HomeServerProject_ArduinoCode.ino` in the Arduino IDE.
+2. Select the correct Arduino board.
+3. Select the correct USB port.
+4. Confirm that the LED and servo connections match the pins defined in the program.
+5. Upload the program to the Arduino.
+6. Connect the Arduino to the Raspberry Pi through USB.
+
+Check the Arduino serial port with:
+
+```bash
+ls /dev/ttyACM*
+```
+
+The device will commonly appear as:
+
+```text
+/dev/ttyACM0
+```
+
+### 8. Run the Flask Application
+
+```bash
+python app.py
+```
+
+### 9. Open the Dashboard
+
+Find the Raspberry Pi IP address:
+
+```bash
+hostname -I
+```
+
+Open the dashboard in a browser:
+
+```text
+http://YOUR_PI_IP:5000
+```
+
+Replace `YOUR_PI_IP` with the Raspberry Pi's local IP address.
+
+### 10. Stop the Application
+
+Press:
+
+```text
+Ctrl + C
+```
+
+Then deactivate the virtual environment:
+
+```bash
+deactivate
+```
+
+## Running the Project Again
+
+After the initial setup, restart the project using:
+
+```bash
+cd raspberry-pi-smart-home-server
+source venv/bin/activate
+node-red-start
+python app.py
+```
+
+## Node-RED Configuration
+
+The included Node-RED flow handles communication between Flask and the Arduino.
+
+Before deploying the flow, confirm that:
+
+* The HTTP endpoints match the URLs used in `app.py`
+* The serial node uses the correct Arduino port
+* The serial baud rate matches the Arduino program
+* The Arduino is connected before deploying the flow
+* The flow has been successfully deployed
+
+## Python Dependencies
+
+The required packages are stored in:
+
+```text
+requirements.txt
+```
+
+Install them using:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+To update the dependency file after installing new packages:
+
+```bash
+python -m pip freeze > requirements.txt
+```
+
+## Security Considerations
+
+This project is designed primarily for use on a trusted local network.
+
+Before allowing remote access:
+
+* Add user authentication
+* Protect all hardware-control routes
+* Validate uploaded file types
+* Set upload-size limits
+* Use environment variables for private configuration
+* Avoid exposing Node-RED directly to the public internet
+* Use HTTPS and secure network configuration
+
+The repository excludes virtual environments, generated Python files, private state files, and other local development files through `.gitignore`.
 
 ## Current Limitations
 
-* The project currently operates primarily on a local network
-* Device controls depend on Node-RED and the Arduino being connected
+* The application is primarily designed for local-network use
+* Device controls require Node-RED and the Arduino to remain connected
 * Uploaded files are stored locally rather than in a database
-* The dashboard does not currently include user authentication
-* Hardware connection errors may require restarting the serial connection
+* User authentication has not yet been implemented
+* Hardware connection failures may require restarting the serial connection
+* The system currently controls only an LED and servo motor
 
 ## Future Improvements
 
 * Raspberry Pi camera streaming
-* User authentication and login system
-* Real-time updates without refreshing the page
-* Database integration
+* User authentication and authorization
+* Real-time updates through WebSockets
+* Database-backed file and device records
 * Live hardware connection status
 * Additional sensors and smart-home devices
 * Secure remote access
@@ -378,16 +397,46 @@ node-red/flows.json
 * Automated testing
 * GitHub Actions integration
 * Docker deployment
-* Expanded error handling
+* Improved error logging and recovery
+
+## Skills Demonstrated
+
+* Full-stack web development
+* Flask routing and template rendering
+* Raspberry Pi system monitoring
+* File-upload and storage management
+* HTTP communication
+* Node-RED automation
+* Arduino programming
+* Serial communication
+* Embedded hardware control
+* Input validation
+* Device-state management
+* Git and GitHub workflow
+* Python virtual environments
+* Technical documentation
 
 ## Project Status
 
-This project is currently in active development.
+The current prototype is functional.
 
-The main dashboard, system-monitoring page, file-management system, Node-RED communication, and Arduino hardware controls are functional.
+The following components have been implemented and tested:
+
+* Main dashboard
+* Live system monitoring
+* File uploading and deletion
+* LED control
+* Preset servo control
+* Custom servo-angle control
+* Flask-to-Node-RED communication
+* Node-RED-to-Arduino serial communication
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ## Author
 
 Developed by **Joey Coifman**
 
-GitHub: `JoeyC18`
+GitHub: [JoeyC18](https://github.com/JoeyC18)
