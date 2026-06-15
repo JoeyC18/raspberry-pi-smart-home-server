@@ -4,6 +4,24 @@ A Raspberry Pi-based smart home server developed using Flask, Node-RED, and Ardu
 
 ![Raspberry Pi Smart Home Server](docs/images/Smart%20Home%20Server%20Main%20Screen.png)
 
+## Project Demonstrations
+
+### Software Walkthrough
+
+This walkthrough demonstrates the Flask dashboard, live Raspberry Pi system monitoring, file management, and device-control interface.
+
+[![Watch the Software Walkthrough](docs/images/Smart%20Home%20Server%20Main%20Screen.png)](https://youtu.be/jApAIk-ZR-c)
+
+[Watch the Software Walkthrough on YouTube](https://youtu.be/jApAIk-ZR-c)
+
+### Full Hardware Demonstration
+
+This demonstration shows the complete system working from the browser interface to the physical hardware. Commands are sent from the Flask dashboard to Node-RED, transferred to the Arduino through USB serial communication, and used to control the LED and servo motor connected to the breadboard.
+
+[![Watch the Full Hardware Demonstration](docs/images/Smart%20Home%20Server%20Device%20Controls.png)](https://youtube.com/shorts/GVCfA7g-HXs?feature=share)
+
+[Watch the Full Hardware Demonstration on YouTube](https://youtube.com/shorts/GVCfA7g-HXs?feature=share)
+
 ## Features
 
 ### System Monitoring
@@ -78,7 +96,7 @@ Arduino
 LED and Servo Motor
 ```
 
-## Example Hardware-Control Flow
+## Hardware-Control Flow
 
 ```text
 User clicks a control button
@@ -116,6 +134,7 @@ The LED or servo motor responds
 * Arduino
 * Node-RED
 * USB serial communication
+* Breadboard
 * LED
 * Servo motor
 
@@ -145,6 +164,9 @@ raspberry-pi-smart-home-server/
 │
 ├── UploadedFiles/
 │
+├── node-red/
+│   └── flows.json
+│
 └── docs/
     └── images/
         ├── Smart Home Server Main Screen.png
@@ -164,6 +186,7 @@ raspberry-pi-smart-home-server/
 * Serial communication between Raspberry Pi and Arduino
 * Embedded hardware control
 * Servo-angle validation
+* Device-state management
 * Git and GitHub version-control workflow
 * Python virtual environments and dependency management
 
@@ -317,12 +340,19 @@ Confirm that:
 * The Node-RED flow has been deployed
 * The Flask application uses the correct Node-RED URLs
 
+The exported Node-RED configuration can be stored in:
+
+```text
+node-red/flows.json
+```
+
 ## Security Notes
 
 * Do not upload passwords, API keys, or private credentials to GitHub
 * Do not upload `.env` files
 * Do not commit the `venv` folder
 * Do not commit Python `__pycache__` folders
+* Do not commit runtime-generated state files
 * Do not store private uploaded files in the public repository
 * Add authentication before enabling remote access
 * Use secure network settings when exposing the server outside the local network
