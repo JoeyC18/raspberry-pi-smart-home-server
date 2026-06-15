@@ -25,3 +25,4 @@ Thumbs.db
 
 # Logs
 *.logdevice_state.json
+device_state.json
