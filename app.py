@@ -1,20 +1,34 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    send_from_directory
+)
+from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
+
+import json
+import os
 import psutil
+import requests
 import socket
 import time
-import os
-from werkzeug.utils import secure_filename
-import requests
-import json
+
+load_dotenv()
 
 UPLOAD_FOLDER = 'UploadedFiles'
 STATE_FILE = 'device_state.json'
-APP_PORT = 5000
+APP_PORT = 5001
 
 current_led_status = "OFF"
 current_servo_position = "0°"
 
-NODE_RED_BASE_URL = "http://10.0.0.7:1880"
+NODE_RED_BASE_URL = os.getenv(
+    "NODE_RED_BASE_URL",
+    "http://127.0.0.1:1880"
+)
 
 
 def load_state():
